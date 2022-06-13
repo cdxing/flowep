@@ -1,0 +1,9 @@
+7.7 2010 2 mb total
+11.5 2010 2 mb total
+19.6 2011 6 mb1-fast HLT-tracks vpd-mon bbc-small-mon-narrow zdc-mon-tac total
+27. 2011 5 mb1-fast vpd-mon-tac bbc-small-mon-narrow zdc-mon-tac total
+39. 2010 4 mb mbslow ht-11 total
+62.4 2010 5 min-bias min-bias-slow ht_11_mb central total
+200. 2010 7 Central vpd-mb NPE_18 NPE_15 NPE_11 NPEHT_25 total
+200. 2011 6 vpd-zdc-mb-protected NPE_18 NPE_15 NPE_11 NPE_18_ftp total
+14.5 2014 7 VPD_mb BBC_mb ZDC_mb hlt-good-vpd tofmult4 mtd-e-muon total

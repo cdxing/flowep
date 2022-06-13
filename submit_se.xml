@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<job maxFilesPerProcess="1" fileListSyntax="paths" >
+
+  <command>
+    starver SL21c
+    ln -s /star/u/dchen/ana/19gev_2019/flowep/StRoot .
+    ln -s /star/u/dchen/ana/19gev_2019/flowep/analyzeTree.C .
+    <!--ln -s /star/u/dchen/ana/19gev_2019/shift/config_19p6GeV.txt . -->
+
+    cons
+    root4star -b -q -l analyzeTree.C\(3,0,\"$INPUTFILE0\",\"$JOBID\",0,1000000000,0\) &gt;&amp; ${JOBID}.log
+    tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
+  </command>
+
+  <SandBox installer="ZIP">
+    <Package>
+      <File>file:./analyzeTree.C</File>
+      <!--File>file:./config_19p6GeV.txt</File-->
+      <File>file:./StRoot</File>
+    </Package>
+  </SandBox>
+
+  <input URL="filelist:/star/u/dchen/ana/19gev_2019/parentparticle/phitreelist/Phi_SE_tree.list" nFiles="all"/>
+   <!--input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,runnumber=&run;,sanity=1,storage!=HPSS" nFiles="all"/-->
+   <!--input URL="catalog:star.bnl.gov?production=P21ic,filetype=daq_reco_picoDst,trgsetupname=production_19GeV_2019,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" nFiles="10369"/-->
+   
+  <stdout discard="true" />
+  <stderr URL="file:./Err_SE/$JOBID.err"/>
+
+  <Generator>
+	  <Location>./Output_SE/</Location>
+	  <ScriptLocation>./Script_SE/</ScriptLocation>
+	  <ListLocation>./List_SE/</ListLocation>
+  </Generator>
+
+  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/flowep/flow_Phi_SE/" />
+  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/flowep/Log_SE/" />
+
+
+</job>
+
