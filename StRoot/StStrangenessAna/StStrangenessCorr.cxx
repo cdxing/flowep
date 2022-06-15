@@ -154,6 +154,57 @@ Float_t StStrangenessCorr::AngleShift(Float_t Psi_raw, Float_t order)
   return Psi_Corr;
 }
 
+// calculate EP angle after Shift Correction EPD
+// 1st
+Float_t StStrangenessCorr::calShiftAngle1EPDfull_EP(TVector2 Q1Vector_EPD, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap)
+{
+  Float_t Psi_ReCenter = TMath::ATan2(Q1Vector_EPD.Y(),Q1Vector_EPD.X());
+  Float_t mean_sin[20], mean_cos[20];
+  Float_t delta_Psi = 0.0;
+  Float_t Psi_Shift;
+
+  //for(Int_t k = 0; k < 5; k++) // Shift Order loop
+  for(Int_t k=0; k<20; k++)
+  {
+    TString ProName_cos, ProName_sin;
+    TProfile3D *p_cos, *p_sin;
+
+    //ProName_cos = Form("CosPsi2_Vertex_%s_EtaGap_%d_Order_%d_West_EP",mVStr[vz_sign].Data(),eta_gap,k);
+    ProName_cos = Form("EPshiftpar_epd_ABCD_wt_full_cos");
+
+    p_cos = (TProfile3D*)mInPutFile_Shift->Get(ProName_cos.Data());
+    //mean_cos[k] = p_cos->GetBinContent(p_cos->FindBin((Double_t)runIndex,(Double_t)Cent9));
+    mean_cos[k] = p_cos->GetBinContent(Cent9+1, k+1, runIndex+1);
+    	//cout << "SE test k  "<< k <<  endl;
+
+    //ProName_sin = Form("SinPsi2_Vertex_%s_EtaGap_%d_Order_%d_West_EP",mVStr[vz_sign].Data(),eta_gap,k);
+    ProName_sin = Form("EPshiftpar_epd_ABCD_wt_full_sin");
+    	//cout << "p_cos =" << p_cos <<  endl;
+    	//cout << "SE test kk  "<< k <<  endl;
+    p_sin = (TProfile3D*)mInPutFile_Shift->Get(ProName_sin.Data());
+    	//cout << "SE test kkk  "<< k <<  endl;
+    //mean_sin[k] = p_sin->GetBinContent(p_sin->FindBin((Double_t)runIndex,(Double_t)Cent9));
+    	//cout << "p_sin =" << p_sin <<  endl;
+    	//cout << "p_sin->GetBinContent(Cent9+1, k+1, runIndex+1)" << p_sin->GetBinContent(Cent9+1, k+1, runIndex+1) <<  endl;
+    mean_sin[k] = p_sin->GetBinContent(Cent9+1, k+1, runIndex+1);
+    	//cout << "SE test kkkk  "<< k <<  endl;
+               // implement shift correction
+    float tmp = (float)(1*(k+1));
+    float sinAve = p_sin->GetBinContent(Cent9+1, k+1, runIndex+1);
+    float cosAve = p_cos->GetBinContent(Cent9+1, k+1, runIndex+1);
+    delta_Psi +=
+    2.0*(cosAve*TMath::Sin(tmp* Psi_ReCenter) - sinAve*TMath::Cos(tmp* Psi_ReCenter))/tmp;
+
+    //delta_Psi += (1.0/2.0)*(2.0/(Float_t)(k+1))*(-1.0*mean_sin[k]*TMath::Cos(Strangeness::mShiftOrder2[k]*Psi_ReCenter)+mean_cos[k]*TMath::Sin(Strangeness::mShiftOrder2[k]*Psi_ReCenter));
+    	//cout << "SE test kkkkk  "<< k <<  endl;
+  }
+
+  Float_t Psi_Shift_raw = Psi_ReCenter + delta_Psi;
+  Psi_Shift = AngleShift(Psi_Shift_raw,1.0);
+
+  return Psi_Shift;
+}
+
 // calculate EP angle after Shift Correction
 // 2nd
 Float_t StStrangenessCorr::calShiftAngle2East_EP(TVector2 Q2Vector_East, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap)
@@ -170,7 +221,7 @@ Float_t StStrangenessCorr::calShiftAngle2East_EP(TVector2 Q2Vector_East, Int_t r
     TProfile3D *p_cos, *p_sin;
 
     //ProName_cos = Form("CosPsi2_Vertex_%s_EtaGap_%d_Order_%d_East_EP",mVStr[vz_sign].Data(),eta_gap,k);
-    ProName_cos = Form("EPshiftpar_tpc_AB_sub_1_cos");
+    /*ProName_cos = Form("EPshiftpar_tpc_AB_sub_1_cos");
 	    
     p_cos = (TProfile3D*)mInPutFile_Shift->Get(ProName_cos.Data());
     mean_cos[k] = p_cos->GetBinContent(p_cos->FindBin((Double_t)runIndex,(Double_t)Cent9));
@@ -179,6 +230,26 @@ Float_t StStrangenessCorr::calShiftAngle2East_EP(TVector2 Q2Vector_East, Int_t r
     ProName_sin = Form("EPshiftpar_tpc_AB_sub_1_sin");
     p_sin = (TProfile3D*)mInPutFile_Shift->Get(ProName_sin.Data());
     mean_sin[k] = p_sin->GetBinContent(p_sin->FindBin((Double_t)runIndex,(Double_t)Cent9));
+
+    delta_Psi += (1.0/2.0)*(2.0/(Float_t)(k+1))*(-1.0*mean_sin[k]*TMath::Cos(Strangeness::mShiftOrder2[k]*Psi_ReCenter)+mean_cos[k]*TMath::Sin(Strangeness::mShiftOrder2[k]*Psi_ReCenter));*/
+
+    //ProName_cos = Form("CosPsi2_Vertex_%s_EtaGap_%d_Order_%d_West_EP",mVStr[vz_sign].Data(),eta_gap,k);
+    ProName_cos = Form("EPshiftpar_tpc_AB_sub_1_cos");
+
+    p_cos = (TProfile3D*)mInPutFile_Shift->Get(ProName_cos.Data());
+    //mean_cos[k] = p_cos->GetBinContent(p_cos->FindBin((Double_t)runIndex,(Double_t)Cent9));
+    mean_cos[k] = p_cos->GetBinContent(Cent9+1, k+1, runIndex+1);
+    	//cout << "SE test k  "<< k <<  endl;
+
+    //ProName_sin = Form("SinPsi2_Vertex_%s_EtaGap_%d_Order_%d_West_EP",mVStr[vz_sign].Data(),eta_gap,k);
+    ProName_sin = Form("EPshiftpar_tpc_AB_sub_1_sin"); //cout << "p_cos =" << p_cos <<  endl; //cout << "SE test kk  "<< k <<  endl;
+    p_sin = (TProfile3D*)mInPutFile_Shift->Get(ProName_sin.Data());
+    	//cout << "SE test kkk  "<< k <<  endl;
+    //mean_sin[k] = p_sin->GetBinContent(p_sin->FindBin((Double_t)runIndex,(Double_t)Cent9));
+    	//cout << "p_sin =" << p_sin <<  endl;
+    	//cout << "p_sin->GetBinContent(Cent9+1, k+1, runIndex+1)" << p_sin->GetBinContent(Cent9+1, k+1, runIndex+1) <<  endl;
+    mean_sin[k] = p_sin->GetBinContent(Cent9+1, k+1, runIndex+1);
+    	//cout << "SE test kkkk  "<< k <<  endl;
 
     delta_Psi += (1.0/2.0)*(2.0/(Float_t)(k+1))*(-1.0*mean_sin[k]*TMath::Cos(Strangeness::mShiftOrder2[k]*Psi_ReCenter)+mean_cos[k]*TMath::Sin(Strangeness::mShiftOrder2[k]*Psi_ReCenter));
   }

@@ -31,6 +31,7 @@ class StStrangenessCorr : public TObject
     bool passTrackNumCut(Int_t, Int_t); // Num of Tracks East, Num of Tracks West
 
     Float_t AngleShift(Float_t Psi_raw, Float_t order);
+    Float_t calShiftAngle1EPDfull_EP(TVector2 Q1Vector_EPD, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap);
     Float_t calShiftAngle2East_EP(TVector2, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap);
     Float_t calShiftAngle2West_EP(TVector2, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap);
 

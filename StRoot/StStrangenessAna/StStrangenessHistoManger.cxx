@@ -80,15 +80,23 @@ void StStrangenessHistoManger::Init(Int_t X_flag, Int_t mode) // 0 for Same Even
     h_pt_y_mass_se = new TH3F("h_pt_y_mass_se", "", 15, 0.0, 3.0, 40, -2.0, 2.0, 100, 0.98, 1.05);
     h_pt_y_mass_me = new TH3F("h_pt_y_mass_me", "", 15, 0.0, 3.0, 40, -2.0, 2.0, 100, 0.98, 1.05);
     //for (int sub = 0; sub < _numSubEvents; sub++) // event plane Psi histograms
+    h_psi1_epd_ABCD_shifted_wt_full = new TH1F(Form("h_psi1_epd_ABCD_shifted_wt_full"), "#Psi_{1}^{EPD-full} w/ eta weighting distribution (shifted)",1024,-7.0,7.0);
+
     for (int sub = 0; sub < 2; sub++) // event plane Psi histograms
     {
-    	h_psi1_epd_ABCD_shifted_wt_sub[sub] = new TH1F(Form("h_psi1_epd_ABCD_shifted_wt_sub_%d",sub + 1), Form("#Psi_{1}^{EPD} %d w/ eta weighting distribution (shifted)",sub + 1 ) ,1024,-7.0,7.0);
+    	//h_psi1_epd_ABCD_shifted_wt_sub[sub] = new TH1F(Form("h_psi1_epd_ABCD_shifted_wt_sub_%d",sub + 1), Form("#Psi_{1}^{EPD} %d w/ eta weighting distribution (shifted)",sub + 1 ) ,1024,-7.0,7.0);
 	h_psi2_tpc_AB_shifted_sub[sub] = new TH1F(Form("h_psi2_tpc_AB_shifted_sub_%d",sub + 1), Form("#Psi_{2}^{TPC} %d distribution (shifted)", sub + 1) ,1024,-7.0,7.0);
     }
     h_psi2_tpc_AB_shifted_subs = new TH2F(Form("h_psi2_tpc_AB_shifted_subs"), "#Psi_{2} distribution (shifted) #Psi_{2}^{East}  vs. #Psi_{2}^{West} " ,35,-3.5,3.5,35,-3.5,3.5);
 
 
 }
+//--------------------- EPD ----------------------------------------
+void StStrangenessHistoManger::FillPsiShiftFull_wt(Float_t Psi)
+{
+	  h_psi1_epd_ABCD_shifted_wt_full->Fill(Psi);
+}
+
 //-------------------------------------------------------------
 void StStrangenessHistoManger::Fill_EP_QA_East(Float_t Psi2_east)
 {
@@ -219,7 +227,9 @@ void StStrangenessHistoManger::Write()
     }
     h_pt_y_mass_se->Write();
     h_pt_y_mass_me->Write();
+    h_psi1_epd_ABCD_shifted_wt_full->Write();
     h_psi2_tpc_AB_shifted_sub[0]->Write();
     h_psi2_tpc_AB_shifted_sub[1]->Write();
     h_psi2_tpc_AB_shifted_subs->Write();
+
 }

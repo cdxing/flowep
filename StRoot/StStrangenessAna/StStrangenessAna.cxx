@@ -359,6 +359,7 @@ void StStrangenessAna::MakePhiSE()
     //Float_t        VzVpd = 0.0;
     Int_t          NumTrackUsed = 0;
     // ---------------------------------------QVector---------------------------------------------
+    TVector2       Q1Full[4];
     TVector2       Q2East[4];
     TVector2       Q2West[4];
     TVector2       Q3East[4];
@@ -368,6 +369,7 @@ void StStrangenessAna::MakePhiSE()
     Int_t          NumTrackWest[4];
     for(Int_t j = 0; j < 4; j++)
     {
+        Q1Full[j].Set(0.0,0.0);
         Q2East[j].Set(0.0,0.0);
         Q2West[j].Set(0.0,0.0);
         Q3East[j].Set(0.0,0.0);
@@ -398,6 +400,7 @@ void StStrangenessAna::MakePhiSE()
 
         for(Int_t j = 0; j < 4; j++)
         {
+            Q1Full[j]       = mXuPhiMeson_event->getQ1Full(j);
             Q2East[j]       = mXuPhiMeson_event->getQ2East(j);
             Q2West[j]       = mXuPhiMeson_event->getQ2West(j);
             Q3East[j]       = mXuPhiMeson_event->getQ3East(j);
@@ -405,6 +408,7 @@ void StStrangenessAna::MakePhiSE()
             NumTrackEast[j] = mXuPhiMeson_event->getNumTrackEast(j);
             NumTrackWest[j] = mXuPhiMeson_event->getNumTrackWest(j);
         }
+        Float_t Psi1_Full = -999.9;
         Float_t Psi2_East_ltrack = -999.9, Psi2_West_ltrack = -999.9;
 
         // Initialise Track 
@@ -467,6 +471,10 @@ void StStrangenessAna::MakePhiSE()
                 cout << " " << counter-start_event_use << " (" << event_percent << "%) " << "\n" << "==> Processing data (strangeness_flow) " << flush;
             }
         }
+        TVector2 Q1EPD_Full = Q1Full[0];
+        //Psi1_Full = TMath::ATan2(Q1EPD_Full.Y(),Q1EPD_Full.X());
+        Psi1_Full = mStrangenessCorr->calShiftAngle1EPDfull_EP(Q1EPD_Full,runIndex,cent9,vz_sign,0);
+        mStrangenessHistoManger->FillPsiShiftFull_wt(Psi1_Full);
 
         // get Track Information
         for(Int_t j = 0; j < Strangeness::mEtaGap_total; j++)
@@ -645,6 +653,7 @@ void StStrangenessAna::MakePhiME()
     //Float_t        VzVpd = 0.0;
     Int_t          NumTrackUsed = 0;
     // ---------------------------------------QVector---------------------------------------------
+    TVector2       Q1Full[4];
     TVector2       Q2East[4];
     TVector2       Q2West[4];
     TVector2       Q3East[4];
@@ -654,6 +663,7 @@ void StStrangenessAna::MakePhiME()
     Int_t          NumTrackWest[4];
     for(Int_t j = 0; j < 4; j++)
     {
+        Q1Full[j].Set(0.0,0.0);
         Q2East[j].Set(0.0,0.0);
         Q2West[j].Set(0.0,0.0);
         Q3East[j].Set(0.0,0.0);
@@ -684,6 +694,7 @@ void StStrangenessAna::MakePhiME()
 
         for(Int_t j = 0; j < 4; j++)
         {
+            Q1Full[j]       = mXuPhiMeson_event->getQ1Full(j);
             Q2East[j]       = mXuPhiMeson_event->getQ2East(j);
             Q2West[j]       = mXuPhiMeson_event->getQ2West(j);
             Q3East[j]       = mXuPhiMeson_event->getQ3East(j);
@@ -691,6 +702,7 @@ void StStrangenessAna::MakePhiME()
             NumTrackEast[j] = mXuPhiMeson_event->getNumTrackEast(j);
             NumTrackWest[j] = mXuPhiMeson_event->getNumTrackWest(j);
         }
+        Float_t Psi1_Full = -999.9;
         Float_t Psi2_East_ltrack = -999.9, Psi2_West_ltrack = -999.9;
 
         // Initialise Track 
@@ -753,6 +765,10 @@ void StStrangenessAna::MakePhiME()
                 cout << " " << counter-start_event_use << " (" << event_percent << "%) " << "\n" << "==> Processing data (strangeness_flow) " << flush;
             }
         }
+        TVector2 Q1EPD_Full = Q1Full[0];
+        //Psi1_Full = TMath::ATan2(Q1EPD_Full.Y(),Q1EPD_Full.X());
+        Psi1_Full = mStrangenessCorr->calShiftAngle1EPDfull_EP(Q1EPD_Full,runIndex,cent9,vz_sign,0);
+        mStrangenessHistoManger->FillPsiShiftFull_wt(Psi1_Full);
 
         // get Track Information
         for(Int_t j = 0; j < Strangeness::mEtaGap_total; j++)

@@ -15,6 +15,7 @@ class StStrangenessHistoManger
 
     void Init(Int_t X_flag, Int_t mode);
     void Fill(Float_t pt, Int_t Cent9, Int_t eta_gap, Float_t phi_psi2, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t Mass2, Double_t reweight);
+    void FillPsiShiftFull_wt(Float_t Psi);
     void Fill_EP_QA_East(Float_t Psi2_east);
     void Fill_EP_QA_West(Float_t Psi2_west);
     void Fill_EPs_QA(Float_t Psi2_east, Float_t Psi2_west);
@@ -52,7 +53,8 @@ class StStrangenessHistoManger
     // subtract k0s
     TH1F *h_mMass_Yields_sub[9][4];
     // Event Plane QA
-    TH1F *h_psi1_epd_ABCD_shifted_wt_sub[2];
+    //TH1F *h_psi1_epd_ABCD_shifted_wt_sub[2];
+    TH1F *h_psi1_epd_ABCD_shifted_wt_full;
     //TH1F *h_psi1_epd_ABCD_shifted_wt_sub[_numSubEvents];
     TH2F *h_psi2_tpc_AB_shifted_subs;
 
