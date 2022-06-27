@@ -39,6 +39,7 @@ class StStrangenessCorr : public TObject
     Float_t calShiftAngle3West_EP(TVector2, Int_t runIndex, Int_t Cent9, Int_t vz_sign, Int_t eta_gap);
 
     // Resolution Correction
+    Float_t getResolution1_EP(Int_t, Int_t); // centrlaity, eta_gap
     Float_t getResolution2_EP(Int_t, Int_t); // centrality, eta_gap
     Float_t getResolution3_EP(Int_t, Int_t); // centrality, eta_gap
 

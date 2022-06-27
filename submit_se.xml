@@ -4,8 +4,8 @@
 
   <command>
     starver SL21c
-    ln -s /star/u/dchen/ana/19gev_2019/flowep/StRoot .
-    ln -s /star/u/dchen/ana/19gev_2019/flowep/analyzeTree.C .
+    ln -s /star/u/dchen/ana/19gev_2019/v1/flowep/StRoot .
+    ln -s /star/u/dchen/ana/19gev_2019/v1/flowep/analyzeTree.C .
     <!--ln -s /star/u/dchen/ana/19gev_2019/shift/config_19p6GeV.txt . -->
 
     cons
@@ -34,8 +34,8 @@
 	  <ListLocation>./List_SE/</ListLocation>
   </Generator>
 
-  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/flowep/flow_Phi_SE/" />
-  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/flowep/Log_SE/" />
+  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/v1/flowep/flow_Phi_SE/" />
+  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/19p6GeV/v1/flowep/Log_SE/" />
 
 
 </job>

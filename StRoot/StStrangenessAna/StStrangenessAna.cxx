@@ -99,7 +99,7 @@ void StStrangenessAna::Init()
     //TString inputdir = Form("/star/u/slan/pwg/fastoffline/7p7gev/phitree/out_Phi/");
     //TString inputdir = Form("/star/data01/pwg/dchen/Ana/19p6GeV/parentparticle/production/");
     //TString inputdir = Form("/star/data01/pwg/dchen/Ana/19p6GeV/parentparticle_me/production/");
-    TString inputdir = Form("/star/u/dchen/ana/19gev_2019/flowep/");
+    TString inputdir = Form("/star/u/dchen/ana/19gev_2019/v1/flowep/");
     setInputDir(inputdir);
 
     //const Int_t list_start = Strangeness::mList_Delta*mList + 1; // start list
@@ -114,7 +114,7 @@ void StStrangenessAna::Init()
         cout << SEList << endl;
 
         //TString outputfile = Form("/star/u/slan/pwg/fastoffline/7p7gev/phiflow/flow_%s_SE/Yields_SE_%s_%d_%d.root",Strangeness::Partype[mMode].Data(),Strangeness::Energy[mEnergy].Data(),list_start,list_stop);
-        TString outputfile = Form("/star/data01/pwg/dchen/Ana/19p6GeV/flowep/flow_%s_SE/Yields_SE_19GeV_%s.root",Strangeness::Partype[mMode].Data(),mJobId.Data());
+        TString outputfile = Form("/star/data01/pwg/dchen/Ana/19p6GeV/v1/flowep/flow_%s_SE/Yields_SE_19GeV_%s.root",Strangeness::Partype[mMode].Data(),mJobId.Data());
         setOutputfile(outputfile);
 
         setStartEvent_SE(Long64_t(mStart_Event));
@@ -131,7 +131,7 @@ void StStrangenessAna::Init()
         setMEList(MEList);
 
         //TString outputfile = Form("/star/u/slan/pwg/fastoffline/7p7gev/phiflow/flow_%s_SE/Yields_SE_19GeV_%d_%d.root",Strangeness::Partype[mMode].Data(),list_start,list_stop);
-        TString outputfile = Form("/star/data01/pwg/dchen/Ana/19p6GeV/flowep/flow_%s_ME/Yields_ME_19GeV_%s.root",Strangeness::Partype[mMode].Data(),mJobId.Data());
+        TString outputfile = Form("/star/data01/pwg/dchen/Ana/19p6GeV/v1/flowep/flow_%s_ME/Yields_ME_19GeV_%s.root",Strangeness::Partype[mMode].Data(),mJobId.Data());
         //TString outputfile = Form("/star/u/slan/pwg/fastoffline/7p7gev/phiflow/flow_%s_ME/Yields_ME_%s_%d_%d.root",Strangeness::Partype[mMode].Data(),Strangeness::Energy[mEnergy].Data(),list_start,list_stop);
         setOutputfile(outputfile);
 
@@ -554,6 +554,7 @@ void StStrangenessAna::MakePhiSE()
                                 Q3Vector = Q3Vector - w*(q3VectorB-q3CorrB);
                             }
     	//cout << "SE test 6.2 " <<  endl;
+                            Float_t Res1 = mStrangenessCorr->getResolution1_EP(cent9,j);
                             Float_t Res2 = mStrangenessCorr->getResolution2_EP(cent9,j);
     	//cout << "SE test 6.3 " <<  endl;
                             Float_t Psi2_west = mStrangenessCorr->calShiftAngle2West_EP(Q2Vector,runIndex,cent9,vz_sign,j);
@@ -563,11 +564,12 @@ void StStrangenessAna::MakePhiSE()
     	//cout << "SE test 6.5 " <<  endl;
                             Float_t Psi3_west = mStrangenessCorr->calShiftAngle3West_EP(Q3Vector,runIndex,cent9,vz_sign,j);
     	//cout << "SE test 6.6 " <<  endl;
+                            Float_t phi_Psi1 = phi_lTrack - Psi1_Full;
                             Float_t phi_Psi2 = phi_lTrack - Psi2_west;
                             Float_t phi_Psi3 = phi_lTrack - Psi3_west;
 
     	//cout << "SE test 6.7 " <<  endl;
-                            mStrangenessHistoManger->Fill(pt_lTrack,cent9,j,phi_Psi2,Res2,phi_Psi3,Res3,InvMass_lTrack,reweight);
+                            mStrangenessHistoManger->Fill(y_lTrack,cent9,j,phi_Psi1,Res1,phi_Psi3,Res3,InvMass_lTrack,reweight);
     	//cout << "SE test 6.8 " <<  endl;
                         }
 
@@ -601,15 +603,17 @@ void StStrangenessAna::MakePhiSE()
                                 TVector2 q3CorrB   = mStrangenessCorr->getReCenterPar_East(1,cent9,runIndex,vz_sign,j,0); // 3rd
                                 Q3Vector = Q3Vector - w*(q3VectorB-q3CorrB);
                             }
+                            Float_t Res1 = mStrangenessCorr->getResolution1_EP(cent9,j);
                             Float_t Res2 = mStrangenessCorr->getResolution2_EP(cent9,j);
                             Float_t Psi2_east = mStrangenessCorr->calShiftAngle2East_EP(Q2Vector,runIndex,cent9,vz_sign,j);
 			    Psi2_East_ltrack = Psi2_east ; 
                             Float_t Res3 = mStrangenessCorr->getResolution3_EP(cent9,j);
                             Float_t Psi3_east = mStrangenessCorr->calShiftAngle3East_EP(Q3Vector,runIndex,cent9,vz_sign,j);
+                            Float_t phi_Psi1 = phi_lTrack - Psi1_Full;
                             Float_t phi_Psi2 = phi_lTrack - Psi2_east;
                             Float_t phi_Psi3 = phi_lTrack - Psi3_east;
 
-                            mStrangenessHistoManger->Fill(pt_lTrack,cent9,j,phi_Psi2,Res2,phi_Psi3,Res3,InvMass_lTrack,reweight);
+                            mStrangenessHistoManger->Fill(y_lTrack,cent9,j,phi_Psi1,Res1,phi_Psi3,Res3,InvMass_lTrack,reweight);
                         }
                     }// Below is East Only
                 }// apply additional PID cut to increase significance
@@ -792,6 +796,7 @@ void StStrangenessAna::MakePhiME()
                     flagB = mXuPhiMeson_track->getFlagB();
                     TLorentzVector lTrack = lTrackA + lTrackB;
                     Float_t pt_lTrack = lTrack.Perp();
+                    //Float_t ycm_lTrack = lTrack.Rapidity();
 
                     // apply additional PID cut to increase significance 
                     if(
@@ -838,15 +843,17 @@ void StStrangenessAna::MakePhiME()
                                 TVector2 q3CorrB   = mStrangenessCorr->getReCenterPar_West(1,cent9,runIndex,vz_sign,j,0); // 3rd
                                 Q3Vector = Q3Vector - w*(q3VectorB-q3CorrB);
                             }
+                            Float_t Res1 = mStrangenessCorr->getResolution1_EP(cent9,j);
                             Float_t Res2 = mStrangenessCorr->getResolution2_EP(cent9,j);
                             Float_t Psi2_west = mStrangenessCorr->calShiftAngle2West_EP(Q2Vector,runIndex,cent9,vz_sign,j);
 			    Psi2_West_ltrack = Psi2_west ; 
                             Float_t Res3 = mStrangenessCorr->getResolution3_EP(cent9,j);
                             Float_t Psi3_west = mStrangenessCorr->calShiftAngle3West_EP(Q3Vector,runIndex,cent9,vz_sign,j);
+                            Float_t phi_Psi1 = phi_lTrack - Psi1_Full;
                             Float_t phi_Psi2 = phi_lTrack - Psi2_west;
                             Float_t phi_Psi3 = phi_lTrack - Psi3_west;
 
-                            mStrangenessHistoManger->Fill(pt_lTrack,cent9,j,phi_Psi2,Res2,phi_Psi3,Res3,InvMass_lTrack,reweight);
+                            mStrangenessHistoManger->Fill(y_lTrack,cent9,j,phi_Psi1,Res1,phi_Psi3,Res3,InvMass_lTrack,reweight);
                         }
 
                         if(mStrangenessCut->passPhiEtaWest(lTrack)) // pos eta
@@ -878,15 +885,17 @@ void StStrangenessAna::MakePhiME()
                                 TVector2 q3CorrB   = mStrangenessCorr->getReCenterPar_East(1,cent9,runIndex,vz_sign,j,0); // 3rd
                                 Q3Vector = Q3Vector - w*(q3VectorB-q3CorrB);
                             }
+                            Float_t Res1 = mStrangenessCorr->getResolution1_EP(cent9,j);
                             Float_t Res2 = mStrangenessCorr->getResolution2_EP(cent9,j);
                             Float_t Psi2_east = mStrangenessCorr->calShiftAngle2East_EP(Q2Vector,runIndex,cent9,vz_sign,j);
 			    Psi2_East_ltrack = Psi2_east ; 
                             Float_t Res3 = mStrangenessCorr->getResolution3_EP(cent9,j);
                             Float_t Psi3_east = mStrangenessCorr->calShiftAngle3East_EP(Q3Vector,runIndex,cent9,vz_sign,j);
+                            Float_t phi_Psi1 = phi_lTrack - Psi1_Full;
                             Float_t phi_Psi2 = phi_lTrack - Psi2_east;
                             Float_t phi_Psi3 = phi_lTrack - Psi3_east;
 
-                            mStrangenessHistoManger->Fill(pt_lTrack,cent9,j,phi_Psi2,Res2,phi_Psi3,Res3,InvMass_lTrack,reweight);
+                            mStrangenessHistoManger->Fill(y_lTrack,cent9,j,phi_Psi1,Res1,phi_Psi3,Res3,InvMass_lTrack,reweight);
                         }
                     }
                 }

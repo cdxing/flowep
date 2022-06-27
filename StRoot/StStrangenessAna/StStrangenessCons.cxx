@@ -13,7 +13,8 @@ Int_t   Strangeness::mList_Delta = 10;  // shaowei change from 20
 //--------------------------------------------------------------------
 // Cuts 
 Float_t Strangeness::mDcaEPMax[5] = {3.0,1.0,1.0,1.0,1.0}; // for event plane reconstruction: 3.0 for 200GeV, 1.0 for BES
-Int_t   Strangeness::mTrackMin = 2;
+//Int_t   Strangeness::mTrackMin = 2;
+Int_t   Strangeness::mTrackMin = 0;
 Float_t Strangeness::mShiftOrder2[5] = {2.0, 4.0, 6.0, 8.0, 10.0};
 Float_t Strangeness::mShiftOrder3[5] = {3.0, 6.0, 9.0, 12.0, 15.0};
 Int_t   Strangeness::mHitsFitTPCMin = 15;
@@ -36,6 +37,8 @@ Int_t   Strangeness::mBeamYear[4] = {2011,2010,2011,2014};
 //                                       0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,10 ,11 ,12 ,13 ,14 ,15 ,16 ,17 ,18 ,19 ,10 ,21 ,22
 Float_t Strangeness::pt_low_phi[23] = {0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.4,3.8,4.2,4.6,5.0,5.4,5.8,6.2};
 Float_t Strangeness::pt_up_phi[23]  = {0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.4,3.8,4.2,4.6,5.0,5.4,5.8,6.2,6.6};
+Float_t Strangeness::ycm_low_phi[16] = {-1.6,-1.4,-1.2,-1.0,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4};
+Float_t Strangeness::ycm_up_phi[16]  = {-1.4,-1.2,-1.0,-0.8,-0.6,-0.4,-0.2, 0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6};
 
 // Centrality bin
 Int_t Strangeness::cent_low[4] = {0,7,4,0}; // 0 = 0-80%, 1 = 0-10%, 2 = 10-40%, 3 = 40-80%
@@ -44,10 +47,16 @@ TString Strangeness::Centrality_01[4] = {"0080","0010","1040","4080"};
 TString Strangeness::Centrality_23[4] = {"0070","0010","1040","4070"};
 
 // phi-Psi bin
+Double_t Strangeness::phi_Psi1_low[7] = {0.0,TMath::Pi()/7.0,2.0*TMath::Pi()/7.0,3.0*TMath::Pi()/7.0,4.0*TMath::Pi()/7.0,5.0*TMath::Pi()/7.0,6.0*TMath::Pi()/7.0};
+Double_t Strangeness::phi_Psi1_up[7]  = {TMath::Pi()/7.0,2.0*TMath::Pi()/7.0,3.0*TMath::Pi()/7.0,4.0*TMath::Pi()/7.0,5.0*TMath::Pi()/7.0,6.0*TMath::Pi()/7.0,7.0*TMath::Pi()/7.0};
+
 Double_t Strangeness::phi_Psi2_low[7] = {0.0,TMath::Pi()/14.0,2.0*TMath::Pi()/14.0,3.0*TMath::Pi()/14.0,4.0*TMath::Pi()/14.0,5.0*TMath::Pi()/14.0,6.0*TMath::Pi()/14.0};
 Double_t Strangeness::phi_Psi2_up[7]  = {TMath::Pi()/14.0,2.0*TMath::Pi()/14.0,3.0*TMath::Pi()/14.0,4.0*TMath::Pi()/14.0,5.0*TMath::Pi()/14.0,6.0*TMath::Pi()/14.0,7.0*TMath::Pi()/14.0};
 Double_t Strangeness::phi_Psi3_low[7] = {0.0,TMath::Pi()/21.0,2.0*TMath::Pi()/21.0,3.0*TMath::Pi()/21.0,4.0*TMath::Pi()/21.0,5.0*TMath::Pi()/21.0,6.0*TMath::Pi()/21.0};
 Double_t Strangeness::phi_Psi3_up[7]  = {TMath::Pi()/21.0,2.0*TMath::Pi()/21.0,3.0*TMath::Pi()/21.0,4.0*TMath::Pi()/21.0,5.0*TMath::Pi()/21.0,6.0*TMath::Pi()/21.0,7.0*TMath::Pi()/21.0};
+
+Double_t Strangeness::Psi1_low[3] = {-3.0*TMath::Pi()/1.0,-1.0*TMath::Pi()/1.0,1.0*TMath::Pi()/1.0};
+Double_t Strangeness::Psi1_up[3]  = {-1.0*TMath::Pi()/1.0, 1.0*TMath::Pi()/1.0,3.0*TMath::Pi()/1.0};
 
 Double_t Strangeness::Psi2_low[3] = {-3.0*TMath::Pi()/2.0,-1.0*TMath::Pi()/2.0,1.0*TMath::Pi()/2.0};
 Double_t Strangeness::Psi2_up[3]  = {-1.0*TMath::Pi()/2.0, 1.0*TMath::Pi()/2.0,3.0*TMath::Pi()/2.0};
@@ -55,6 +64,7 @@ Double_t Strangeness::Psi3_low[5] = {-4.0*TMath::Pi()/3.0,-3.0*TMath::Pi()/3.0,-
 Double_t Strangeness::Psi3_up[5]  = {-3.0*TMath::Pi()/3.0,-1.0*TMath::Pi()/3.0, 1.0*TMath::Pi()/3.0,3.0*TMath::Pi()/3.0,4.0*TMath::Pi()/3.0};
 
 Int_t Strangeness::pt_total_phi = 23;
+Int_t Strangeness::ycm_total_phi = 16;
 
 Int_t Strangeness::Centrality_total = 4;    // shaowei
 Int_t Strangeness::Centrality_start = 0;

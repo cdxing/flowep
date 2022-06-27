@@ -21,7 +21,7 @@ StStrangenessHistoManger::~StStrangenessHistoManger()
 void StStrangenessHistoManger::Init(Int_t X_flag, Int_t mode) // 0 for Same Event, 1 for Mixed Event
 {
     // flow analysis
-    for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt bin | TODO: increase pt_bin to 8 GeV/c
+    for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm bin | TODO: increase ycm_bin to 8 GeV/c
     {
         for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
         {
@@ -31,10 +31,10 @@ void StStrangenessHistoManger::Init(Int_t X_flag, Int_t mode) // 0 for Same Even
                 {
                     TString Mode[2] = {"SE","ME"};
                     TString HistName;
-                    HistName = Form("pt_%d_Centrality_%d_EtaGap_%d_phi_Psi_%d_2nd_%s_%s",i,j,l,m,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
-                    h_mMass2_EP[i][j][l][m] = new TH1F(HistName.Data(),HistName.Data(),200,Strangeness::InvMass_low[mode],Strangeness::InvMass_high[mode]);
-                    h_mMass2_EP[i][j][l][m]->Sumw2();
-                    HistName = Form("pt_%d_Centrality_%d_EtaGap_%d_phi_Psi_%d_3rd_%s_%s",i,j,l,m,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
+                    HistName = Form("ycm_%d_Centrality_%d_EtaGap_%d_phi_Psi_%d_1st_%s_%s",i,j,l,m,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
+                    h_mMass1_EP[i][j][l][m] = new TH1F(HistName.Data(),HistName.Data(),200,Strangeness::InvMass_low[mode],Strangeness::InvMass_high[mode]);
+                    h_mMass1_EP[i][j][l][m]->Sumw2();
+                    HistName = Form("ycm_%d_Centrality_%d_EtaGap_%d_phi_Psi_%d_3rd_%s_%s",i,j,l,m,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
                     h_mMass3_EP[i][j][l][m] = new TH1F(HistName.Data(),HistName.Data(),200,Strangeness::InvMass_low[mode],Strangeness::InvMass_high[mode]);
                     h_mMass3_EP[i][j][l][m]->Sumw2();
 
@@ -44,8 +44,8 @@ void StStrangenessHistoManger::Init(Int_t X_flag, Int_t mode) // 0 for Same Even
         }
     }
 
-    // raw pt spectra | TODO: use finer pt_bin
-    for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt bin
+    // raw ycm spectra | TODO: use finer ycm_bin
+    for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm bin
     {
         for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
         {
@@ -53,7 +53,7 @@ void StStrangenessHistoManger::Init(Int_t X_flag, Int_t mode) // 0 for Same Even
             {
                 TString Mode[2] = {"SE","ME"};
                 TString HistName; 
-                HistName = Form("Spec_pt_%d_Centrality_%d_EtaGap_%d_%s_%s",i,j,l,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
+                HistName = Form("Spec_ycm_%d_Centrality_%d_EtaGap_%d_%s_%s",i,j,l,Strangeness::Partype[mode].Data(),Mode[X_flag].Data());
                 h_mMass_Spec[i][j][l] = new TH1F(HistName.Data(),HistName.Data(),200,Strangeness::InvMass_low[mode],Strangeness::InvMass_high[mode]);
                 h_mMass_Spec[i][j][l]->Sumw2();
 
@@ -111,13 +111,13 @@ void StStrangenessHistoManger::Fill_EPs_QA(Float_t Psi2_east, Float_t Psi2_west)
 	h_psi2_tpc_AB_shifted_subs->Fill(Psi2_east,Psi2_west);
 }
 
-void StStrangenessHistoManger::Fill(Float_t pt, Int_t Cent9, Int_t eta_gap, Float_t phi_psi2, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t InvMass, Double_t reweight)
+void StStrangenessHistoManger::Fill(Float_t ycm, Int_t Cent9, Int_t eta_gap, Float_t phi_psi1, Float_t Res1, Float_t phi_psi3, Float_t Res3, Float_t InvMass, Double_t reweight)
 {
-    if(Res2 > 0.0)
+    if(Res1 > 0.0)
     {
-        for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt_bin
+        for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm_bin
         {
-            if(pt > Strangeness::pt_low_phi[i] && pt < Strangeness::pt_up_phi[i])
+            if(ycm > Strangeness::ycm_low_phi[i] && ycm < Strangeness::ycm_up_phi[i])
             {
                 for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
                 {
@@ -125,16 +125,16 @@ void StStrangenessHistoManger::Fill(Float_t pt, Int_t Cent9, Int_t eta_gap, Floa
                     {
                         for(Int_t psi_bin = 0; psi_bin < 3; psi_bin++)
                         {
-                            if(phi_psi2 >= Strangeness::Psi2_low[psi_bin] && phi_psi2 < Strangeness::Psi2_up[psi_bin])
+                            if(phi_psi1 >= Strangeness::Psi1_low[psi_bin] && phi_psi1 < Strangeness::Psi1_up[psi_bin])
                             {
-                                Float_t phi_psi2_final = phi_psi2 - (psi_bin-1)*2.0*TMath::Pi()/2.0;
+                                Float_t phi_psi1_final = phi_psi1 - (psi_bin-1)*2.0*TMath::Pi();///2.0;
                                 for(Int_t m = 0; m < Strangeness::Phi_Psi_total; m++) // phi-psi2 bin
                                 {
-                                    if(TMath::Abs(phi_psi2_final) >= Strangeness::phi_Psi2_low[m] && TMath::Abs(phi_psi2_final) < Strangeness::phi_Psi2_up[m])
+                                    if(TMath::Abs(phi_psi1_final) >= Strangeness::phi_Psi1_low[m] && TMath::Abs(phi_psi1_final) < Strangeness::phi_Psi1_up[m])
                                     {
                                         // flow
-                                        h_mMass2_EP[i][j][eta_gap][m]->Fill(InvMass,(reweight/Res2));
-                                        // raw pt spectra
+                                        h_mMass1_EP[i][j][eta_gap][m]->Fill(InvMass,(reweight/Res1));
+                                        // raw ycm spectra
                                         h_mMass_Spec[i][j][eta_gap]->Fill(InvMass,reweight);
                                         //		    cout << "m = " << m << endl;
                                     }
@@ -148,9 +148,9 @@ void StStrangenessHistoManger::Fill(Float_t pt, Int_t Cent9, Int_t eta_gap, Floa
     }
     if(Res3 > 0.0)
     {
-        for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt_bin
+        for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm_bin
         {
-            if(pt > Strangeness::pt_low_phi[i] && pt < Strangeness::pt_up_phi[i])
+            if(ycm > Strangeness::ycm_low_phi[i] && ycm < Strangeness::ycm_up_phi[i])
             {
                 for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
                 {
@@ -190,7 +190,7 @@ void StStrangenessHistoManger::FillAcc(Float_t pt, Float_t rapidity, Float_t Inv
 void StStrangenessHistoManger::Write()
 {
     // flow
-    for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt bin
+    for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm bin
     {
         for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
         {
@@ -198,7 +198,7 @@ void StStrangenessHistoManger::Write()
             {
                 for(Int_t m = 0; m < Strangeness::Phi_Psi_total; m ++) // phi-psi bin
                 {
-                    h_mMass2_EP[i][j][l][m]->Write();
+                    h_mMass1_EP[i][j][l][m]->Write();
                     h_mMass3_EP[i][j][l][m]->Write();
                 }
             }
@@ -214,8 +214,8 @@ void StStrangenessHistoManger::Write()
         }
     }
 
-    // raw pt spectra
-    for(Int_t i = 0; i < Strangeness::pt_total_phi; i++) // pt bin
+    // raw ycm spectra
+    for(Int_t i = 0; i < Strangeness::ycm_total_phi; i++) // ycm bin
     {
         for(Int_t j = Strangeness::Centrality_start; j < Strangeness::Centrality_stop; j++) // centrality bin
         {

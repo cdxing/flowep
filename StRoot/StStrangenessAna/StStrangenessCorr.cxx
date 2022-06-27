@@ -369,6 +369,23 @@ Float_t StStrangenessCorr::calShiftAngle3West_EP(TVector2 Q3Vector_West, Int_t r
 }
 //--------------------------------------------------------
 // Resolution Correction
+Float_t StStrangenessCorr::getResolution1_EP(Int_t Cent9, Int_t eta_gap)
+{
+  //TString ProName = Form("Res2_EtaGap_%d_EP",eta_gap);
+  TString ProName = Form("p_r1_epd_ABCD_wt_sub0_1");
+  TProfile *p_res2 = (TProfile*)mInPutFile_Res->Get(ProName.Data());
+  Float_t Res_raw = p_res2->GetBinContent(p_res2->FindBin(Cent9));
+  if(Res_raw <= 0)
+  {
+    return -999.9;
+  }
+  else
+  {
+    Float_t Res = TMath::Sqrt(Res_raw) * TMath::Sqrt(2); // full event plane resolution
+    return Res;
+  }
+}
+
 Float_t StStrangenessCorr::getResolution2_EP(Int_t Cent9, Int_t eta_gap)
 {
   //TString ProName = Form("Res2_EtaGap_%d_EP",eta_gap);

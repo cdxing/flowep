@@ -35,6 +35,10 @@ class Strangeness
     static Float_t pt_low_phi[23];
     static Float_t pt_up_phi[23];
 
+    // ycm bin
+    static Float_t ycm_low_phi[16];
+    static Float_t ycm_up_phi[16];
+
     // Centrality bin
     static Int_t   cent_low[4];   // shaowei
     static Int_t   cent_up[4];
@@ -42,17 +46,23 @@ class Strangeness
     static TString Centrality_23[4]; // {"0070","0010","1040","4070"};
 
     // phi-Psi bin
+    static Double_t phi_Psi1_low[7];
+    static Double_t phi_Psi1_up[7];
+
     static Double_t phi_Psi2_low[7];
     static Double_t phi_Psi2_up[7];
     static Double_t phi_Psi3_low[7];
     static Double_t phi_Psi3_up[7];
 
+    static Double_t Psi1_low[3];
+    static Double_t Psi1_up[3];
     static Double_t Psi2_low[3];
     static Double_t Psi2_up[3];
     static Double_t Psi3_low[5];
     static Double_t Psi3_up[5];
 
     static Int_t pt_total_phi;
+    static Int_t ycm_total_phi;
 
     static Int_t Centrality_total;
     static Int_t Centrality_start;

@@ -14,13 +14,13 @@ class StStrangenessHistoManger
     ~StStrangenessHistoManger();
 
     void Init(Int_t X_flag, Int_t mode);
-    void Fill(Float_t pt, Int_t Cent9, Int_t eta_gap, Float_t phi_psi2, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t Mass2, Double_t reweight);
+    void Fill(Float_t ycm, Int_t Cent9, Int_t eta_gap, Float_t phi_psi1, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t Mass2, Double_t reweight);
     void FillPsiShiftFull_wt(Float_t Psi);
     void Fill_EP_QA_East(Float_t Psi2_east);
     void Fill_EP_QA_West(Float_t Psi2_west);
     void Fill_EPs_QA(Float_t Psi2_east, Float_t Psi2_west);
 
-    void Fill_sub(Float_t pt, Int_t Cent9, Int_t eta_gap, Float_t phi_psi2, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t Mass2, Double_t reweight);
+    void Fill_sub(Float_t pt, Int_t Cent9, Int_t eta_gap, Float_t phi_psi1, Float_t Res2, Float_t phi_psi3, Float_t Res3, Float_t Mass2, Double_t reweight);
     void Write();
     void FillAcc(Float_t, Float_t, Float_t);
 
@@ -30,6 +30,8 @@ class StStrangenessHistoManger
     // 1 = centrality: 0 = 0-80%(0-70%), 1 = 0-10%, 2 = 10-40%, 3 = 40-80%(40-70%)
     // 2 = eta_gap
     // 3 = phi - Psi
+    TH1F *h_mMass1_EP[16][4][4][7];   // dchen
+
     TH1F *h_mMass2_EP[23][4][4][7];   // shaowei
     TH1F *h_mMass3_EP[23][4][4][7];  // shaowei
     // subtract k0s
@@ -43,7 +45,8 @@ class StStrangenessHistoManger
     // 0 = pt bin
     // 1 = centrality: 0 = 0-80%(0-70%), 1 = 0-10%, 2 = 10-40%, 3 = 40-80%(40-70%)
     // 2 = eta_gap
-    TH1F *h_mMass_Spec[23][4][4];
+    TH1F *h_mMass_Spec[16][4][4];
+    //TH1F *h_mMass_Spec[23][4][4];
     TH1F *h_mMass_Spec_sub[23][4][4];
 
     // event plane resolution correction
